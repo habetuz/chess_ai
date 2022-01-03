@@ -1,6 +1,9 @@
 use std::io::Write;
+use crate::engine;
+use crate::engine::GameState;
+use crate::engine::GameState::Normal;
 
-pub fn turn(board: [[char; 8]; 8], white: bool) -> [[char; 8]; 8] {
+pub fn turn(board: [[char; 8]; 8], white: bool) -> GameState {
     let input = loop {
         if white { print!("White> "); }
         else { print!("Black> "); }
@@ -14,6 +17,8 @@ pub fn turn(board: [[char; 8]; 8], white: bool) -> [[char; 8]; 8] {
                 .expect("Failed to read line!");
             input
         };
+
+        let input = input.to_uppercase();
 
         match parse_input(input) {
             Ok(value) => { break value; }
@@ -32,7 +37,7 @@ pub fn turn(board: [[char; 8]; 8], white: bool) -> [[char; 8]; 8] {
 
     }
 
-    board
+    Normal(board)
 }
 
 fn parse_input<'a>(input : String) -> Result<(String, String), ()> {
