@@ -108,7 +108,7 @@ pub fn print_board(board: Board) {
     println!("    A B C D E F G H");
 }
 
-// Get a char representing either the figure at the given position or a space.
+//! Get a char representing either the figure at the given position or a space.
 fn get_str(board: Board, x: u8, y: u8) -> ColoredString {
     for piece in board {
         if x == piece.1 && y == piece.2 {

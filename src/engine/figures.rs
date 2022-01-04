@@ -1,6 +1,36 @@
-use std::collections::HashMap;
-
 pub type Figure = char;
+
+//! Contains all moves a figure can make.
+//! `(127, 127)` and `[(127, 127); 7]` are filler moves to fill the array to the right size. They should be ignored.
+//!
+//! A movement set contains multiple movement sub sets.
+//! Movement sub sets are independent of each other
+//! but if a figure cannot make one move of a movement sub set,
+//! it also cannot do any of the following moves of that movement sub set.
+//!
+//! **Example**
+//! ```
+//! [
+//!     [
+//!     (1, 1),
+//!     (2, 2),
+//!     (3, 3),
+//!     ...
+//!     ],
+//!     [
+//!     (-1, -1),
+//!     (-2, -2),
+//!     (-3, -3),
+//!     ...
+//!     ]
+//! ]
+//! ```
+//! Let's say the figure can move `(1, 1)`, but not `(2, 2)`. Then only `(1, 1)` is a possible move of that sub set.
+//! `(3, 3)` is not possible, because could only be possible if `(2, 2)` is possible.
+//!
+//! The next sub set `(-1, -1), (-2, -2), (-3, -3)` could still be possible.
+pub type MovementSet = [MovementSet; 8];
+pub type MovementSubSet = [(i8, i8); 7];
 
 pub const WHITE_PAWN: Figure = '♙';
 pub const WHITE_KNIGHT: Figure = '♘';
@@ -16,7 +46,9 @@ pub const BLACK_ROOK: Figure = '♜';
 pub const BLACK_QUEEN: Figure = '♛';
 pub const BLACK_KING: Figure = '♚';
 
-static MOVEMENT_KNIGHT: [[(i8, i8); 7]; 8] = [
+pub const CAUGHT: Figure = '\u{FFFF}';
+
+static MOVEMENT_KNIGHT: MovementSet = [
     [
         (2, -1),
         (127, 127),
@@ -91,7 +123,7 @@ static MOVEMENT_KNIGHT: [[(i8, i8); 7]; 8] = [
     ],
 ];
 
-static MOVEMENT_BISHOP: [[(i8, i8); 7]; 8] = [
+static MOVEMENT_BISHOP: MovementSet = [
     [(1, 1), (2, 2), (3, 3), (4, 4), (5, 5), (6, 6), (7, 7)],
     [
         (1, -1),
@@ -126,7 +158,7 @@ static MOVEMENT_BISHOP: [[(i8, i8); 7]; 8] = [
     [(127, 127); 7],
 ];
 
-static MOVEMENT_ROOK: [[(i8, i8); 7]; 8] = [
+static MOVEMENT_ROOK: MovementSet = [
     [(1, 0), (2, 0), (3, 0), (4, 0), (5, 0), (6, 0), (7, 0)],
     [(0, 1), (0, 2), (0, 3), (0, 4), (0, 5), (0, 6), (0, 7)],
     [
@@ -153,7 +185,7 @@ static MOVEMENT_ROOK: [[(i8, i8); 7]; 8] = [
     [(127, 127); 7],
 ];
 
-static MOVEMENT_QUEEN: [[(i8, i8); 7]; 8] = [
+static MOVEMENT_QUEEN: MovementSet = [
     [(1, 1), (2, 2), (3, 3), (4, 4), (5, 5), (6, 6), (7, 7)],
     [(1, 0), (2, 0), (3, 0), (4, 0), (5, 0), (6, 0), (7, 0)],
     [(0, 1), (0, 2), (0, 3), (0, 4), (0, 5), (0, 6), (0, 7)],
@@ -204,7 +236,7 @@ static MOVEMENT_QUEEN: [[(i8, i8); 7]; 8] = [
     ],
 ];
 
-static MOVEMENT_KING: [[(i8, i8); 7]; 8] = [
+static MOVEMENT_KING: MovementSet = [
     [
         (1, 1),
         (127, 127),
@@ -279,7 +311,7 @@ static MOVEMENT_KING: [[(i8, i8); 7]; 8] = [
     ],
 ];
 
-static MOVEMENT_WHITE_PAWN_UNMOVED: [[(i8, i8); 7]; 8] = [
+static MOVEMENT_WHITE_PAWN_UNMOVED: MovementSet = [
     [
         (0, 1),
         (0, 2),
@@ -314,7 +346,7 @@ static MOVEMENT_WHITE_PAWN_UNMOVED: [[(i8, i8); 7]; 8] = [
     [(127, 127); 7],
 ];
 
-static MOVEMENT_WHITE_PAWN_MOVED: [[(i8, i8); 7]; 8] = [
+static MOVEMENT_WHITE_PAWN_MOVED: MovementSet = [
     [
         (0, 1),
         (127, 127),
@@ -349,7 +381,7 @@ static MOVEMENT_WHITE_PAWN_MOVED: [[(i8, i8); 7]; 8] = [
     [(127, 127); 7],
 ];
 
-static MOVEMENT_BLACK_PAWN_UNMOVED: [[(i8, i8); 7]; 8] = [
+static MOVEMENT_BLACK_PAWN_UNMOVED: MovementSet = [
     [
         (0, -1),
         (0, -2),
@@ -384,7 +416,7 @@ static MOVEMENT_BLACK_PAWN_UNMOVED: [[(i8, i8); 7]; 8] = [
     [(127, 127); 7],
 ];
 
-static MOVEMENT_BLACK_PAWN_MOVED: [[(i8, i8); 7]; 8] = [
+static MOVEMENT_BLACK_PAWN_MOVED: MovementSet = [
     [
         (0, -1),
         (127, 127),
@@ -419,7 +451,7 @@ static MOVEMENT_BLACK_PAWN_MOVED: [[(i8, i8); 7]; 8] = [
     [(127, 127); 7],
 ];
 
-pub fn get_moves(figure: Figure, y: i8) -> [[(i8, i8); 7]; 8] {
+pub fn get_moves(figure: Figure, y: i8) -> MovementSet {
     match figure {
         WHITE_KNIGHT => MOVEMENT_KNIGHT,
         BLACK_KNIGHT => MOVEMENT_KNIGHT,

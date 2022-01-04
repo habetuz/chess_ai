@@ -5,9 +5,17 @@ use crate::engine::figures::{
 
 mod figures;
 
+//! ```
+//! The Figure
+//!  |       x   y
+//!  |       |   |
+//! (Figure, u8, u8)
+//! ```
+//!
+//! [`Figure`] will be [`figures::CAUGHT`] when it is caught.
 pub type Board = [(Figure, u8, u8); 32];
 
-// Initial board.
+//! Initial board.
 pub const INITIAL_BOARD: Board = [
     (BLACK_ROOK, 1, 8),
     (BLACK_KNIGHT, 2, 8),
