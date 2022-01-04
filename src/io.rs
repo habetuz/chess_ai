@@ -3,8 +3,8 @@ use crate::GameState::Normal;
 use colored::*;
 use std::io::Write;
 
-static PADDING: char = ' ';
-static EMPTY_FIELD: char = ' ';
+const PADDING: char = ' ';
+const EMPTY_FIELD: char = ' ';
 
 pub fn turn(board: Board, white: bool) -> GameState {
     let input = loop {

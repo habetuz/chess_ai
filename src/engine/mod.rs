@@ -1,14 +1,14 @@
-use crate::engine::pieces::{
+use crate::engine::figures::{
     Figure, BLACK_BISHOP, BLACK_KING, BLACK_KNIGHT, BLACK_PAWN, BLACK_QUEEN, BLACK_ROOK,
     WHITE_BISHOP, WHITE_KING, WHITE_KNIGHT, WHITE_PAWN, WHITE_QUEEN, WHITE_ROOK,
 };
 
-mod pieces;
+mod figures;
 
 pub type Board = [(Figure, u8, u8); 32];
 
 // Initial board.
-pub static INITIAL_BOARD: Board = [
+pub const INITIAL_BOARD: Board = [
     (BLACK_ROOK, 1, 8),
     (BLACK_KNIGHT, 2, 8),
     (BLACK_BISHOP, 3, 8),
