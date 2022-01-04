@@ -60,25 +60,7 @@ fn parse_input<'a>(input: String) -> Result<(String, String), ()> {
 fn validate_coordinate(coordinate: &str) -> bool {
     let coordinate: Vec<char> = coordinate.chars().collect();
 
-    coordinate.len() == 2 && (coordinate[0] >= 'A' && coordinate[0] <= 'H') && (coordinate[1] >= '1' && coordinate[1] <= '8')
-
-    /*
     coordinate.len() == 2
-        && (coordinate[0] == 'A'
-            || coordinate[0] == 'B'
-            || coordinate[0] == 'C'
-            || coordinate[0] == 'D'
-            || coordinate[0] == 'E'
-            || coordinate[0] == 'F'
-            || coordinate[0] == 'G'
-            || coordinate[0] == 'H')
-        && (coordinate[1] == '1'
-            || coordinate[1] == '1'
-            || coordinate[1] == '2'
-            || coordinate[1] == '3'
-            || coordinate[1] == '4'
-            || coordinate[1] == '5'
-            || coordinate[1] == '6'
-            || coordinate[1] == '7'
-            || coordinate[1] == '8')*/
+        && (coordinate[0] >= 'A' && coordinate[0] <= 'H')
+        && (coordinate[1] >= '1' && coordinate[1] <= '8')
 }

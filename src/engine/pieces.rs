@@ -1,15 +1,15 @@
-pub type piece = char
+pub type Piece = char;
 
-pub let white_pawn: piece = '♙'
-pub let white_knight: piece = '♘';
-pub let white_bishop: piece = '♗';
-pub let white_rook: piece = '♖';
-pub let white_queen: piece = '♕';
-pub let white_king: piece = '♔';
+pub static WHITE_PAWN: Piece = '♙';
+pub static WHITE_KNIGHT: Piece = '♘';
+pub static WHITE_BISHOP: Piece = '♗';
+pub static WHITE_ROOK: Piece = '♖';
+pub static WHITE_QUEEN: Piece = '♕';
+pub static WHITE_KING: Piece = '♔';
 
-pub let black_pawn: piece = '♟︎';
-pub let black_knight: piece = '♞';
-pub let black_bishop: piece = '♝';
-pub let black_rook: piece = '♜';
-pub let black_queen: piece = '♛';
-pub let black_king: piece = '♚';
+pub static BLACK_PAWN: Piece = '♟';
+pub static BLACK_KNIGHT: Piece = '♞';
+pub static BLACK_BISHOP: Piece = '♝';
+pub static BLACK_ROOK: Piece = '♜';
+pub static BLACK_QUEEN: Piece = '♛';
+pub static BLACK_KING: Piece = '♚';
