@@ -3,9 +3,8 @@ mod engine;
 mod io;
 
 fn main() {
-    // let mut board = [[' '; 8]; 8];
     let mut board = engine::INITIAL_BOARD;
-    engine::print_board(board);
+    io::print_board(board);
     loop {
         board = match io::turn(board, true) {
             GameState::Normal(value) => value,

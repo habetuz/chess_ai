@@ -1,11 +1,14 @@
 use crate::engine::pieces::{
-    BLACK_BISHOP, BLACK_KING, BLACK_KNIGHT, BLACK_PAWN, BLACK_QUEEN, BLACK_ROOK, WHITE_BISHOP,
-    WHITE_KING, WHITE_KNIGHT, WHITE_PAWN, WHITE_QUEEN, WHITE_ROOK,
+    Figure, BLACK_BISHOP, BLACK_KING, BLACK_KNIGHT, BLACK_PAWN, BLACK_QUEEN, BLACK_ROOK,
+    WHITE_BISHOP, WHITE_KING, WHITE_KNIGHT, WHITE_PAWN, WHITE_QUEEN, WHITE_ROOK,
 };
 
 mod pieces;
 
-pub static INITIAL_BOARD: [(char, u8, u8); 32] = [
+pub type Board = [(Figure, u8, u8); 32];
+
+// Initial board.
+pub static INITIAL_BOARD: Board = [
     (BLACK_ROOK, 1, 8),
     (BLACK_KNIGHT, 2, 8),
     (BLACK_BISHOP, 3, 8),
@@ -41,7 +44,7 @@ pub static INITIAL_BOARD: [(char, u8, u8); 32] = [
 ];
 
 pub enum GameState {
-    Normal([[char; 8]; 8]),
-    CheckMate([[char; 8]; 8]),
-    Check([[char; 8]; 8]),
+    Normal(Board),
+    CheckMate(Board),
+    Check(Board),
 }

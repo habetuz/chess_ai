@@ -1,15 +1,15 @@
-pub type Piece = char;
+pub type Figure = char;
 
-pub static WHITE_PAWN: Piece = '♙';
-pub static WHITE_KNIGHT: Piece = '♘';
-pub static WHITE_BISHOP: Piece = '♗';
-pub static WHITE_ROOK: Piece = '♖';
-pub static WHITE_QUEEN: Piece = '♕';
-pub static WHITE_KING: Piece = '♔';
+pub static WHITE_PAWN: Figure = '♙';
+pub static WHITE_KNIGHT: Figure = '♘';
+pub static WHITE_BISHOP: Figure = '♗';
+pub static WHITE_ROOK: Figure = '♖';
+pub static WHITE_QUEEN: Figure = '♕';
+pub static WHITE_KING: Figure = '♔';
 
-pub static BLACK_PAWN: Piece = '♟';
-pub static BLACK_KNIGHT: Piece = '♞';
-pub static BLACK_BISHOP: Piece = '♝';
-pub static BLACK_ROOK: Piece = '♜';
-pub static BLACK_QUEEN: Piece = '♛';
-pub static BLACK_KING: Piece = '♚';
+pub static BLACK_PAWN: Figure = '♟';
+pub static BLACK_KNIGHT: Figure = '♞';
+pub static BLACK_BISHOP: Figure = '♝';
+pub static BLACK_ROOK: Figure = '♜';
+pub static BLACK_QUEEN: Figure = '♛';
+pub static BLACK_KING: Figure = '♚';
