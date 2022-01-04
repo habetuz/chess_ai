@@ -1,35 +1,35 @@
 pub type Figure = char;
 
-//! Contains all moves a figure can make.
-//! `(127, 127)` and `[(127, 127); 7]` are filler moves to fill the array to the right size. They should be ignored.
-//!
-//! A movement set contains multiple movement sub sets.
-//! Movement sub sets are independent of each other
-//! but if a figure cannot make one move of a movement sub set,
-//! it also cannot do any of the following moves of that movement sub set.
-//!
-//! **Example**
-//! ```
-//! [
-//!     [
-//!     (1, 1),
-//!     (2, 2),
-//!     (3, 3),
-//!     ...
-//!     ],
-//!     [
-//!     (-1, -1),
-//!     (-2, -2),
-//!     (-3, -3),
-//!     ...
-//!     ]
-//! ]
-//! ```
-//! Let's say the figure can move `(1, 1)`, but not `(2, 2)`. Then only `(1, 1)` is a possible move of that sub set.
-//! `(3, 3)` is not possible, because could only be possible if `(2, 2)` is possible.
-//!
-//! The next sub set `(-1, -1), (-2, -2), (-3, -3)` could still be possible.
-pub type MovementSet = [MovementSet; 8];
+/// Contains all moves a figure can make.
+/// `(127, 127)` and `[(127, 127); 7]` are filler moves to fill the array to the right size. They should be ignored.
+///
+/// A movement set contains multiple movement sub sets.
+/// Movement sub sets are independent of each other
+/// but if a figure cannot make one move of a movement sub set,
+/// it also cannot do any of the following moves of that movement sub set.
+///
+/// **Example**
+/// ```
+/// [
+///     [
+///     (1, 1),
+///     (2, 2),
+///     (3, 3),
+///     ...
+///     ],
+///     [
+///     (-1, -1),
+///     (-2, -2),
+///     (-3, -3),
+///     ...
+///     ]
+/// ]
+/// ```
+/// Let's say the figure can move `(1, 1)`, but not `(2, 2)`. Then only `(1, 1)` is a possible move of that sub set.
+/// `(3, 3)` is not possible, because could only be possible if `(2, 2)` is possible.
+///
+/// The next sub set `(-1, -1), (-2, -2), (-3, -3)` could still be possible.
+pub type MovementSet = [MovementSubSet; 8];
 pub type MovementSubSet = [(i8, i8); 7];
 
 pub const WHITE_PAWN: Figure = '♙';
