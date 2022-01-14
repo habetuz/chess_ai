@@ -220,7 +220,7 @@ pub fn move_figure(
     mut board: Board,
     mut black_figures: Positions,
     mut white_figures: Positions,
-    figure: Figure,
+    mut figure: Figure,
     from_x: u8,
     from_y: u8,
     to_x: u8,
@@ -264,6 +264,9 @@ pub fn move_figure(
         for i in (figure % ((figure / 10) * 10) - 1) as usize..white_figures.len() {
             let mut figure = white_figures[i];
             if figure.1 == from_x && figure.2 == from_y {
+                if figure.0 == WHITE_PAWN && to_y == 8 {
+                    figure.0 = WHITE_QUEEN;
+                }
                 figure.1 = to_x;
                 figure.2 = to_y;
             }
@@ -274,6 +277,9 @@ pub fn move_figure(
         for i in (figure % ((figure / 10) * 10) - 1) as usize..black_figures.len() {
             let mut figure = black_figures[i];
             if figure.1 == from_x && figure.2 == from_y {
+                if figure.0 == BLACK_PAWN && to_y == 1 {
+                    figure.0 = BLACK_QUEEN;
+                }
                 figure.1 = to_x;
                 figure.2 = to_y;
             }
@@ -317,9 +323,7 @@ pub fn move_figure(
         }
 
         board[63 + (figure as f32).log10() as usize] = 0;
-    }
-
-    if figure == WHITE_ROOK || figure == BLACK_ROOK {
+    } else if figure == WHITE_ROOK || figure == BLACK_ROOK {
         if (board[63 + (figure as f32).log10() as usize] == 1
             || board[63 + (figure as f32).log10() as usize] == 3)
             && from_x == 1
@@ -328,6 +332,12 @@ pub fn move_figure(
         } else if board[63 + (figure as f32).log10() as usize] >= 2 && from_x == 8 {
             board[63 + (figure as f32).log10() as usize] -= 2
         }
+    }
+
+    if figure == WHITE_PAWN && to_y == 8 {
+        figure = WHITE_QUEEN;
+    } else if figure == BLACK_PAWN && to_y == 1 {
+        figure = BLACK_PAWN;
     }
 
     board = set_figure(board, figure, to_x, to_y);

@@ -44,5 +44,7 @@ fn main() {
         } else {
             "Black"
         }
-    })
+    });
+
+    loop {}
 }

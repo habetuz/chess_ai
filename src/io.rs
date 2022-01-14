@@ -253,14 +253,14 @@ pub fn is_checkmate(
             continue;
         }
         let movement_set = get_valid_moves(board, figure.0, figure.1, figure.2);
-        print!("{} at x{}y{}", get_str(figure.0), figure.1, figure.2);
+        ////print!("{} at x{}y{}", get_str(figure.0), figure.1, figure.2);
         for subset in movement_set {
             for r#move in subset {
                 if r#move.0 > 8 {
                     break;
                 }
 
-                print!(" to x{}y{} | ", r#move.0, r#move.1);
+                ////print!(" to x{}y{} | ", r#move.0, r#move.1);
 
                 let board = move_figure(
                     board,
@@ -275,12 +275,12 @@ pub fn is_checkmate(
                 );
 
                 if is_board_valid(board.0, board.1, board.2, white) {
-                    println!();
+                    ////println!();
                     return false;
                 }
             }
         }
-        println!()
+        ////println!()
     }
 
     true
