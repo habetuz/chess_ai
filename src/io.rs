@@ -7,23 +7,41 @@ use std::io::Write;
 const PADDING: char = ' ';
 const EMPTY_FIELD: char = ' ';
 
+/// # Funktion `io::turn`
+///
+/// Zug-Funktion für Menschen.
+///
+/// ---
+/// ## Parameter
+/// `board`: [`Board`], das ein Spielbrett mit Feldern enthält, auf der Figuren stehen können.
+///
+/// `black_figures`: [`Positions`], die jede schwarze Figur und ihre Position enthält. Figur hat den wert `255` wenn sie geschlagen wurde.
+///
+/// `black_figures`: [`Positions`], die jede weiße Figur und ihre Position enthält. Figur hat den wert `255` wenn sie geschlagen wurde.
+///
+/// ---
+/// ## Rückgabewert [`GameState`]
+/// Gibt entweder einen [`GameState::Normal`] zurück, das das neue Spielbrett enthält, oder einen [`GameState::CheckMate`] wenn der ziehende Spieler gewonnen hat.
 pub fn turn(
     board: Board,
     black_figures: Positions,
     white_figures: Positions,
     white: bool,
 ) -> GameState {
+    // Der Rückgabewert des loops wird in `resulting_board` gespeichert. Siehe [`quick_rust_explanation: Rückgabe von Werten`] wie die Rückgabe von Werten in Rust funktioniert.
     let resulting_board = loop {
-        // Fetch input
+        // Der Input wird vom Spieler eingeholt
         let input = loop {
             if white {
-                print!("White> ");
+                print!("Weiß> ");
             } else {
-                print!("Black> ");
+                print!("Schwarz> ");
             }
 
+            // Terminal macht einen flush normalerweise nur nach einem Zeilenumbruch, da `Weiß>` oder `Schwarz>` schon im Terminal stehen soll, wird hier schon ein flush gemacht.
             std::io::stdout().flush().expect("Could not flush stdout!");
 
+            // Es wird eine Zeile vom Spieler gelesen (bis enter gedrückt wird) und in `input` gespeichert.
             let input = {
                 let mut input = "".to_string();
                 std::io::stdin()
@@ -32,26 +50,31 @@ pub fn turn(
                 input
             };
 
+            // z.B. `a1` wird zu `A1`
             let input = input.to_uppercase();
 
+            // Wenn das parsen erfolgreich war, wird der input in dem Format `(A1, B2)` zurückgegeben.
+            // Ansonsten wird dem Spieler mitgeteilt, dass er eine falsche Angabe gemacht hat und der Prozess des Input Einholens beginnt von neuem.
             match parse_input(input) {
                 Some(value) => {
                     break value;
                 }
                 None => {
-                    println!("Could not read input!");
+                    println!("Eingabe ist falsch!");
                     continue;
                 }
             }
         };
 
-        // Handle input
+        // Wenn die zweite Koordinate des Inputs leer ist, bedeutet das, dass der Spieler nur über die möglichen Züge einer Figur bescheid wissen möchte.
+        // Ansonsten möchte er eine Figur bewegen.
         if input.1 == "" {
-            // Only one coordinate got submitted: Print possible moves for the figure at that position.
             handle_possible_moves_request(board, black_figures, white_figures, white, input.0);
+            // Da der Spieler nun noch keinen Zug gemacht hat, wird der ganze Zug Prozess noch einmal von vorne gestartet.
             continue;
         } else {
-            // Two coordinates got submitted: Move the figure at the first coordinate to the second one.
+            // Wenn der Zug möglich war, wird das neue Spielbrett aus dem loop zurückgegeben.
+            // Ansonsten wird eine Error-Nachricht ausgegeben und der Zug Prozess beginnt noch einmal von vorne.
             match handle_move_request(board, black_figures, white_figures, white, input) {
                 Ok(value) => {
                     break value;
@@ -61,18 +84,21 @@ pub fn turn(
                     continue;
                 }
             };
-        }
+        };
     };
 
+    // Es wird überprüft ob der nicht ziehende Spieler nun Schach Matt ist und in diesem Fall wird ein [`GameState::CheckMate`] zurückgegeben.
+    // Ansonsten wird ein normaler status zurückgegeben. Beide Möglichkeiten enthalten das neue Spielfeld.
     if is_checkmate(
         resulting_board.0,
         resulting_board.1,
         resulting_board.2,
         !white,
     ) {
-        return CheckMate(resulting_board);
+        CheckMate(resulting_board)
+    } else {
+        Normal(resulting_board)
     }
-    Normal(resulting_board)
 }
 
 fn handle_possible_moves_request(
