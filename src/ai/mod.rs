@@ -24,7 +24,11 @@ pub fn turn(
 
     let mut alpha = i32::MIN;
     let mut beta = i32::MAX;
-    println!("        KQNNBBRRPPPPPPPP -> Progress meaning");
+    if white {
+        println!("       KDRRLLTTBBBBBBBB -> Fortschritt Bedeutung");
+    } else {
+        println!("          KDRRLLTTBBBBBBBB -> Fortschritt Bedeutung");
+    }
 
     let mut progress = 0;
     print_progress(progress, white);
@@ -94,7 +98,7 @@ pub fn turn(
         print_progress(progress, white);
     }
     println!(
-        ": Minimum outcome: {}. Moved {} at {}{} to {}{}",
+        " Mindestens erreichbarer Wert: {}. Bewegt {} an {}{} nach {}{}",
         best_value,
         get_str(best_move.0 .0),
         ('A' as u8 + best_move.0 .1 - 1) as char,
@@ -112,9 +116,9 @@ pub fn turn(
 
 fn print_progress(progress: u8, white: bool) {
     if white {
-        print!("\rWhite> [");
+        print!("\rWeiß> [");
     } else {
-        print!("\rBlack> [");
+        print!("\rSchwarz> [");
     }
 
     for i in 0..16 {

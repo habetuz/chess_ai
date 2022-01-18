@@ -116,12 +116,12 @@ fn handle_possible_moves_request(
 
     let figure = get_figure(board, position.0, position.1);
     if figure == 0 {
-        println!("There is no figure at that position!");
+        println!("An diese Position ist keine Figur!");
         return;
     }
 
     if (white && figure / 10 != 0) || (!white && figure / 10 != 1) {
-        println!("The figure you want to move does not belong to you!");
+        println!("Diese Figur gehört nicht dir!");
         return;
     }
 
@@ -187,11 +187,11 @@ fn handle_move_request(
     let figure = get_figure(board, start_position.0, start_position.1);
 
     if figure == 0 {
-        return Err("There is no figure at the given position!".to_string());
+        return Err("An diese Position ist keine Figur!".to_string());
     }
 
     if (white && figure / 10 != 0) || (!white && figure / 10 != 1) {
-        return Err("The figure you want to move does not belong to you!".to_string());
+        return Err("Diese Figur gehört nicht dir!".to_string());
     }
 
     let moves = get_valid_moves(board, figure, start_position.0, start_position.1);
@@ -216,7 +216,7 @@ fn handle_move_request(
         !is_board_valid(resulting_board.0, resulting_board.1, resulting_board.2, white)
     {
         return Err(format!(
-            "You cannot move {} at {} to {}!",
+            "Figur {} an {} kann nicht nach {} bewegt werden!",
             get_str(figure).on_white(),
             input.0,
             input.1
@@ -224,7 +224,7 @@ fn handle_move_request(
     }
 
     println!(
-        "Move {} at {} to {}",
+        "Bewege {} an {} nach {}",
         get_str(figure).on_white(),
         input.0,
         input.1
