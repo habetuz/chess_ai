@@ -1,7 +1,7 @@
 use crate::engine::figures::{
-    get_relative_moves, Figure, MovementSet, BLACK_BISHOP, BLACK_KING, BLACK_KNIGHT, BLACK_PAWN,
-    BLACK_QUEEN, BLACK_ROOK, WHITE_BISHOP, WHITE_KING, WHITE_KNIGHT, WHITE_PAWN, WHITE_QUEEN,
-    WHITE_ROOK,
+    colored_figure_to_blank_figure, get_relative_moves, Figure, MovementSet, BLACK_BISHOP,
+    BLACK_KING, BLACK_KNIGHT, BLACK_PAWN, BLACK_QUEEN, BLACK_ROOK, KING, ROOK, WHITE_BISHOP,
+    WHITE_KING, WHITE_KNIGHT, WHITE_PAWN, WHITE_QUEEN, WHITE_ROOK,
 };
 
 pub mod figures;
@@ -89,7 +89,7 @@ pub static INITIAL_BOARD: Board = [
 /// (Figure, u8, u8)
 /// ```
 ///
-/// [`Figure`] will be [`figures::CAUGHT`] when it is caught.
+/// [`Figure`] will be `255` when it is caught.
 pub type Positions = [Position; 16];
 pub type Position = (Figure, u8, u8);
 
@@ -170,19 +170,21 @@ pub fn get_valid_moves(board: Board, figure: Figure, x: u8, y: u8) -> MovementSe
 
             let figure_at_move = get_figure(board, position.0 as u8, position.1 as u8);
 
+            // Check if the figure at the position is the opposite color (and can therefore be caught)
+            leave = figure_at_move != 0;
+
             // Check if the figure at the position is the same color
-            if figure_at_move / 10 == figure / 10 {
+            if leave && figure_at_move / 10 == figure / 10 {
                 position.0 = 127;
                 position.1 = 127;
                 subset[i] = position;
                 break;
             }
 
-            // Check if the figure at the position is the opposite color (and can therefore be caught)
-            leave = figure_at_move != 0;
-
-            // Special pawn rule: It can only move diagonally if it can catch a figure there.
-            if !leave && (figure == WHITE_PAWN || figure == BLACK_PAWN) && position.0 as u8 != x {
+            // Special pawn rule: It can only move diagonally if it can catch a figure there and it cannot move forward if would catch a figure there.
+            if (figure == WHITE_PAWN || figure == BLACK_PAWN)
+                && ((position.0 as u8 != x && !leave) || (position.0 as u8 == x && leave))
+            {
                 position.0 = 127;
                 position.1 = 127;
                 subset[i] = position;
@@ -190,8 +192,8 @@ pub fn get_valid_moves(board: Board, figure: Figure, x: u8, y: u8) -> MovementSe
             // Special king/rook rule: Castling. See https://schach.de/de/page/schachregeln-die-rochade
             } else if figure == WHITE_KING || figure == BLACK_KING {
                 if position.0 == x as i8 - 2 {
-                    if !((board[63 + (figure as f32).log10() as usize] == 1
-                        || board[63 + (figure as f32).log10() as usize] == 3)
+                    if !((board[(64 + figure / 10) as usize] == 1
+                        || board[(64 + figure / 10) as usize] == 3)
                         && get_figure(board, (position.0 - 1) as u8, position.1 as u8) == 0)
                     {
                         position.0 = 127;
@@ -200,7 +202,7 @@ pub fn get_valid_moves(board: Board, figure: Figure, x: u8, y: u8) -> MovementSe
                         break;
                     }
                 } else if position.0 == x as i8 + 2 {
-                    if board[63 + (figure as f32).log10() as usize] < 2 {
+                    if board[(64 + figure / 10) as usize] < 2 {
                         position.0 = 127;
                         position.1 = 127;
                         subset[i] = position;
@@ -235,33 +237,27 @@ pub fn move_figure(
     if caught_figure != 0 {
         // Mark that figure as caught
         if white {
-            for i in (caught_figure % ((caught_figure / 10) * 10) - 1) as usize..black_figures.len()
-            {
+            for i in (caught_figure - 10 - 1) as usize..black_figures.len() {
                 let mut figure = black_figures[i as usize];
-                if figure.1 == to_x && figure.2 == to_y {
-                    figure.1 = 255;
-                    figure.2 = 255;
+                if figure.0 != 255 && figure.1 == to_x && figure.2 == to_y {
+                    figure.0 = 255;
+                    black_figures[i] = figure;
                 }
-
-                black_figures[i] = figure;
             }
         } else {
-            for i in (caught_figure % ((caught_figure / 10) * 10) - 1) as usize..white_figures.len()
-            {
+            for i in (caught_figure - 1) as usize..white_figures.len() {
                 let mut figure = white_figures[i];
-                if figure.1 == to_x && figure.2 == to_y {
-                    figure.1 = 255;
-                    figure.2 = 255;
+                if figure.0 != 255 && figure.1 == to_x && figure.2 == to_y {
+                    figure.0 = 255;
+                    white_figures[i] = figure;
                 }
-
-                white_figures[i] = figure;
             }
         }
     }
 
     // Update position of figure
     if white {
-        for i in (figure % ((figure / 10) * 10) - 1) as usize..white_figures.len() {
+        for i in (figure - 1) as usize..white_figures.len() {
             let mut figure = white_figures[i];
             if figure.1 == from_x && figure.2 == from_y {
                 if figure.0 == WHITE_PAWN && to_y == 8 {
@@ -274,7 +270,7 @@ pub fn move_figure(
             white_figures[i] = figure;
         }
     } else {
-        for i in (figure % ((figure / 10) * 10) - 1) as usize..black_figures.len() {
+        for i in (figure - 10 - 1) as usize..black_figures.len() {
             let mut figure = black_figures[i];
             if figure.1 == from_x && figure.2 == from_y {
                 if figure.0 == BLACK_PAWN && to_y == 1 {
@@ -289,7 +285,7 @@ pub fn move_figure(
     }
 
     // Special rule castling
-    if (figure == WHITE_KING || figure == BLACK_KING) && from_x == 5 {
+    if (colored_figure_to_blank_figure(figure) == KING) && from_x == 5 {
         if to_x == from_x - 2 {
             let update = move_figure(
                 board,
@@ -321,16 +317,14 @@ pub fn move_figure(
             black_figures = update.1;
             white_figures = update.2;
         }
-
-        board[63 + (figure as f32).log10() as usize] = 0;
-    } else if figure == WHITE_ROOK || figure == BLACK_ROOK {
-        if (board[63 + (figure as f32).log10() as usize] == 1
-            || board[63 + (figure as f32).log10() as usize] == 3)
+        board[(64 + figure / 10) as usize] = 0;
+    } else if colored_figure_to_blank_figure(figure) == ROOK {
+        if (board[(64 + figure / 10) as usize] == 1 || board[(64 + figure / 10) as usize] == 3)
             && from_x == 1
         {
-            board[63 + (figure as f32).log10() as usize] -= 1
-        } else if board[63 + (figure as f32).log10() as usize] >= 2 && from_x == 8 {
-            board[63 + (figure as f32).log10() as usize] -= 2
+            board[(64 + figure / 10) as usize] -= 1
+        } else if board[(64 + figure / 10) as usize] >= 2 && from_x == 8 {
+            board[(64 + figure / 10) as usize] -= 2
         }
     }
 
@@ -357,4 +351,37 @@ pub fn contains_position(movement_set: MovementSet, position: (u8, u8)) -> bool 
         }
     }
     false
+}
+
+pub fn is_board_valid(
+    board: Board,
+    black_figures: Positions,
+    white_figures: Positions,
+    white: bool,
+) -> bool {
+    let king = {
+        if white {
+            white_figures[0]
+        } else {
+            black_figures[0]
+        }
+    };
+
+    for figure in {
+        if white {
+            black_figures
+        } else {
+            white_figures
+        }
+    } {
+        if figure.0 == 255 {
+            continue;
+        }
+
+        let movement_set = get_valid_moves(board, figure.0, figure.1, figure.2);
+        if contains_position(movement_set, (king.1, king.2)) {
+            return false;
+        }
+    }
+    true
 }

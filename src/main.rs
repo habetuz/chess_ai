@@ -1,6 +1,6 @@
 use crate::engine::GameState;
-use crate::io::is_checkmate;
 
+mod ai;
 mod engine;
 mod io;
 
@@ -8,7 +8,7 @@ fn main() {
     let mut board = engine::INITIAL_BOARD;
     let mut black_figures = engine::POSITIONS_BLACK;
     let mut white_figures = engine::POSITIONS_WHITE;
-    assert!(!is_checkmate(board, black_figures, white_figures, true));
+
     let end_board = loop {
         io::print_board(board);
 
@@ -25,16 +25,20 @@ fn main() {
 
         io::print_board(board);
 
-        match io::turn(board, black_figures, white_figures, false) {
+        // thread::sleep(Duration::from_secs(1));
+
+        match ai::turn(board, black_figures, white_figures, false, 3) {
             GameState::Normal(value) => {
                 board = value.0;
                 black_figures = value.1;
                 white_figures = value.2;
             }
             GameState::CheckMate(value) => {
-                break (value.0, false);
+                break (value.0, true);
             }
         };
+
+        // thread::sleep(Duration::from_secs(1));
     };
 
     io::print_board(end_board.0);
@@ -45,6 +49,4 @@ fn main() {
             "Black"
         }
     });
-
-    loop {}
 }

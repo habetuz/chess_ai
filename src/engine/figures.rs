@@ -47,21 +47,55 @@ pub const CHAR_BLACK_ROOK: char = '♜';
 pub const CHAR_BLACK_QUEEN: char = '♛';
 pub const CHAR_BLACK_KING: char = '♚';
 
-pub const WHITE_KING: Figure = 11;
-pub const WHITE_QUEEN: Figure = 12;
-pub const WHITE_KNIGHT: Figure = 13;
-pub const WHITE_BISHOP: Figure = 15;
-pub const WHITE_ROOK: Figure = 17;
-pub const WHITE_PAWN: Figure = 19;
+const WHITE: Figure = 0;
+const BLACK: Figure = 10;
 
-pub const BLACK_KING: Figure = 101;
-pub const BLACK_QUEEN: Figure = 102;
-pub const BLACK_KNIGHT: Figure = 103;
-pub const BLACK_BISHOP: Figure = 105;
-pub const BLACK_ROOK: Figure = 107;
-pub const BLACK_PAWN: Figure = 109;
+pub const KING: Figure = 1;
+pub const QUEEN: Figure = 2;
+pub const KNIGHT: Figure = 3;
+pub const BISHOP: Figure = 5;
+pub const ROOK: Figure = 7;
+pub const PAWN: Figure = 9;
 
-static MOVEMENT_KNIGHT: MovementSet = [
+pub const WHITE_KING: Figure = KING + WHITE;
+pub const WHITE_QUEEN: Figure = QUEEN + WHITE;
+pub const WHITE_KNIGHT: Figure = KNIGHT + WHITE;
+pub const WHITE_BISHOP: Figure = BISHOP + WHITE;
+pub const WHITE_ROOK: Figure = ROOK + WHITE;
+pub const WHITE_PAWN: Figure = PAWN + WHITE;
+
+pub const BLACK_KING: Figure = KING + BLACK;
+pub const BLACK_QUEEN: Figure = QUEEN + BLACK;
+pub const BLACK_KNIGHT: Figure = KNIGHT + BLACK;
+pub const BLACK_BISHOP: Figure = BISHOP + BLACK;
+pub const BLACK_ROOK: Figure = ROOK + BLACK;
+pub const BLACK_PAWN: Figure = PAWN + BLACK;
+
+static MOVEMENTS: [MovementSet; 21] = [
+    [[(0, 0); 7]; 8],
+    MOVEMENT_KING,
+    MOVEMENT_QUEEN,
+    MOVEMENT_KNIGHT,
+    [[(0, 0); 7]; 8],
+    MOVEMENT_BISHOP,
+    [[(0, 0); 7]; 8],
+    MOVEMENT_ROOK,
+    [[(0, 0); 7]; 8],
+    MOVEMENT_WHITE_PAWN_MOVED,
+    MOVEMENT_WHITE_PAWN_UNMOVED,
+    MOVEMENT_KING,
+    MOVEMENT_QUEEN,
+    MOVEMENT_KNIGHT,
+    [[(0, 0); 7]; 8],
+    MOVEMENT_BISHOP,
+    [[(0, 0); 7]; 8],
+    MOVEMENT_ROOK,
+    [[(0, 0); 7]; 8],
+    MOVEMENT_BLACK_PAWN_MOVED,
+    MOVEMENT_BLACK_PAWN_UNMOVED,
+];
+
+const MOVEMENT_KNIGHT: MovementSet = [
     [
         (2, -1),
         (119, 119),
@@ -136,7 +170,7 @@ static MOVEMENT_KNIGHT: MovementSet = [
     ],
 ];
 
-static MOVEMENT_BISHOP: MovementSet = [
+const MOVEMENT_BISHOP: MovementSet = [
     [(1, 1), (2, 2), (3, 3), (4, 4), (5, 5), (6, 6), (7, 7)],
     [
         (1, -1),
@@ -171,7 +205,7 @@ static MOVEMENT_BISHOP: MovementSet = [
     [(119, 119); 7],
 ];
 
-static MOVEMENT_ROOK: MovementSet = [
+const MOVEMENT_ROOK: MovementSet = [
     [(1, 0), (2, 0), (3, 0), (4, 0), (5, 0), (6, 0), (7, 0)],
     [(0, 1), (0, 2), (0, 3), (0, 4), (0, 5), (0, 6), (0, 7)],
     [
@@ -198,7 +232,7 @@ static MOVEMENT_ROOK: MovementSet = [
     [(119, 119); 7],
 ];
 
-static MOVEMENT_QUEEN: MovementSet = [
+const MOVEMENT_QUEEN: MovementSet = [
     [(1, 1), (2, 2), (3, 3), (4, 4), (5, 5), (6, 6), (7, 7)],
     [(1, 0), (2, 0), (3, 0), (4, 0), (5, 0), (6, 0), (7, 0)],
     [(0, 1), (0, 2), (0, 3), (0, 4), (0, 5), (0, 6), (0, 7)],
@@ -249,7 +283,7 @@ static MOVEMENT_QUEEN: MovementSet = [
     ],
 ];
 
-static MOVEMENT_KING: MovementSet = [
+const MOVEMENT_KING: MovementSet = [
     [
         (1, 1),
         (119, 119),
@@ -324,7 +358,7 @@ static MOVEMENT_KING: MovementSet = [
     ],
 ];
 
-static MOVEMENT_WHITE_PAWN_UNMOVED: MovementSet = [
+const MOVEMENT_WHITE_PAWN_UNMOVED: MovementSet = [
     [
         (0, 1),
         (0, 2),
@@ -359,7 +393,7 @@ static MOVEMENT_WHITE_PAWN_UNMOVED: MovementSet = [
     [(119, 119); 7],
 ];
 
-static MOVEMENT_WHITE_PAWN_MOVED: MovementSet = [
+const MOVEMENT_WHITE_PAWN_MOVED: MovementSet = [
     [
         (0, 1),
         (119, 119),
@@ -394,7 +428,7 @@ static MOVEMENT_WHITE_PAWN_MOVED: MovementSet = [
     [(119, 119); 7],
 ];
 
-static MOVEMENT_BLACK_PAWN_UNMOVED: MovementSet = [
+const MOVEMENT_BLACK_PAWN_UNMOVED: MovementSet = [
     [
         (0, -1),
         (0, -2),
@@ -429,7 +463,7 @@ static MOVEMENT_BLACK_PAWN_UNMOVED: MovementSet = [
     [(119, 119); 7],
 ];
 
-static MOVEMENT_BLACK_PAWN_MOVED: MovementSet = [
+const MOVEMENT_BLACK_PAWN_MOVED: MovementSet = [
     [
         (0, -1),
         (119, 119),
@@ -464,32 +498,16 @@ static MOVEMENT_BLACK_PAWN_MOVED: MovementSet = [
     [(119, 119); 7],
 ];
 
-pub fn get_relative_moves(figure: Figure, y: u8) -> MovementSet {
-    match figure {
-        WHITE_KNIGHT => MOVEMENT_KNIGHT,
-        BLACK_KNIGHT => MOVEMENT_KNIGHT,
-        WHITE_BISHOP => MOVEMENT_BISHOP,
-        BLACK_BISHOP => MOVEMENT_BISHOP,
-        WHITE_QUEEN => MOVEMENT_QUEEN,
-        BLACK_QUEEN => MOVEMENT_QUEEN,
-        WHITE_KING => MOVEMENT_KING,
-        BLACK_KING => MOVEMENT_KING,
-        WHITE_ROOK => MOVEMENT_ROOK,
-        BLACK_ROOK => MOVEMENT_ROOK,
-        WHITE_PAWN => {
-            if y == 2 {
-                MOVEMENT_WHITE_PAWN_UNMOVED
-            } else {
-                MOVEMENT_WHITE_PAWN_MOVED
-            }
-        }
-        BLACK_PAWN => {
-            if y == 7 {
-                MOVEMENT_BLACK_PAWN_UNMOVED
-            } else {
-                MOVEMENT_BLACK_PAWN_MOVED
-            }
-        }
-        _ => panic!("That figure does not exist!"),
+pub fn get_relative_moves(mut figure: Figure, y: u8) -> MovementSet {
+    if figure == WHITE_PAWN && y == 2 {
+        figure += 1;
+    } else if figure == BLACK_PAWN && y == 7 {
+        figure += 1;
     }
+
+    MOVEMENTS[figure as usize]
+}
+
+pub fn colored_figure_to_blank_figure(figure: Figure) -> Figure {
+    figure - 10 * (figure / 10)
 }

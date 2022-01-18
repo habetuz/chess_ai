@@ -94,7 +94,7 @@ fn handle_possible_moves_request(
         return;
     }
 
-    if (white && figure / 10 * 10 - 10 != 0) || (!white && figure / 10 * 10 - 100 != 0) {
+    if (white && figure / 10 != 0) || (!white && figure / 10 != 1) {
         println!("The figure you want to move does not belong to you!");
         return;
     }
@@ -164,7 +164,7 @@ fn handle_move_request(
         return Err("There is no figure at the given position!".to_string());
     }
 
-    if (white && figure / 10 * 10 - 10 != 0) || (!white && figure / 10 * 10 - 100 != 0) {
+    if (white && figure / 10 != 0) || (!white && figure / 10 != 1) {
         return Err("The figure you want to move does not belong to you!".to_string());
     }
 
@@ -207,35 +207,6 @@ fn handle_move_request(
     Ok(resulting_board)
 }
 
-pub fn is_board_valid(
-    board: Board,
-    black_figures: Positions,
-    white_figures: Positions,
-    white: bool,
-) -> bool {
-    let king = {
-        if white {
-            white_figures[0]
-        } else {
-            black_figures[0]
-        }
-    };
-
-    for figure in {
-        if white {
-            black_figures
-        } else {
-            white_figures
-        }
-    } {
-        let movement_set = get_valid_moves(board, figure.0, figure.1, figure.2);
-        if contains_position(movement_set, (king.1, king.2)) {
-            return false;
-        }
-    }
-    true
-}
-
 pub fn is_checkmate(
     board: Board,
     black_figures: Positions,
@@ -249,7 +220,7 @@ pub fn is_checkmate(
             black_figures
         }
     } {
-        if figure.1 == 255 {
+        if figure.0 == 255 {
             continue;
         }
         let movement_set = get_valid_moves(board, figure.0, figure.1, figure.2);
@@ -570,7 +541,7 @@ fn is_in_movement_set(moves: MovementSet, x: u8, y: u8) -> bool {
 }
 
 /// Get a char representing either the figure at the given position or a space.
-fn get_str(figure: Figure) -> ColoredString {
+pub fn get_str(figure: Figure) -> ColoredString {
     match figure {
         WHITE_PAWN => CHAR_WHITE_PAWN.to_string().black().on_white(),
         WHITE_KING => CHAR_WHITE_KING.to_string().black().on_white(),
