@@ -127,7 +127,9 @@ pub fn turn(
         best_move.1 .1
     );
 
-    if best_move.0 .0 == 255 || io::is_checkmate(best_board.0, best_board.1, best_board.2, !white) {
+    if best_move.0 .0 == 255
+        || engine::is_checkmate(best_board.0, best_board.1, best_board.2, !white)
+    {
         engine::GameState::CheckMate(best_board)
     } else {
         engine::GameState::Normal(best_board)
