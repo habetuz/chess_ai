@@ -164,14 +164,14 @@ pub fn min_max(
     depth: u8,
 ) -> i32 {
     if black_figures[0].0 == 255 {
-        return i32::MAX;
+        return i32::MAX - 100 + depth as i32;
     } else if white_figures[0].0 == 255 {
-        return i32::MIN;
+        return i32::MIN + 100 - depth as i32;
     }
 
     if depth == 0 {
-        if !{
-            let mut valide = true;
+        if {
+            let mut could_catch_king = false;
 
             let king = if white {
                 black_figures[0]
@@ -179,7 +179,7 @@ pub fn min_max(
                 white_figures[0]
             };
 
-            for figure in {
+            'search: for figure in {
                 if white {
                     white_figures
                 } else {
@@ -199,22 +199,27 @@ pub fn min_max(
                         }
 
                         if r#move.0 as u8 == king.1 && r#move.1 as u8 == king.2 {
-                            valide = false;
+                            could_catch_king = true;
+                            break 'search;
                         }
                     }
                 }
             }
 
-            valide
+            could_catch_king
         } {
-            return if white { i32::MAX } else { i32::MIN };
+            return if white {
+                i32::MAX - 100 + depth as i32
+            } else {
+                i32::MIN + 100 - depth as i32
+            };
         }
 
         return evaluate_board(black_figures, white_figures);
     }
 
-    let mut min = i32::MAX;
-    let mut max = i32::MIN;
+    let mut min = i32::MAX - 100 + depth as i32;
+    let mut max = i32::MIN + 100 - depth as i32;
 
     'outer: for figure in {
         if white {
@@ -257,10 +262,10 @@ pub fn min_max(
                     depth - 1,
                 );
 
-                if white && var == i32::MAX {
-                    return i32::MAX;
-                } else if !white && var == i32::MIN {
-                    return i32::MIN;
+                if white && var == i32::MAX - 100 + depth as i32 - 1 {
+                    return var;
+                } else if !white && var == i32::MIN + 100 - depth as i32 - 1 {
+                    return var;
                 }
 
                 if var < min {

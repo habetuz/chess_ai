@@ -246,8 +246,8 @@ pub static POSITIONS_BLACK: Positions = [
     (255, 8, 7),
 ];
 
- */
 
+ */
 pub enum GameState {
     Normal((Board, Positions, Positions)),
     CheckMate((Board, Positions, Positions)),
