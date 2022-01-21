@@ -239,7 +239,7 @@ fn handle_move_request(
         !engine::is_board_valid(resulting_board.0, resulting_board.1, resulting_board.2, white)
     {
         return Err(format!(
-            "Figur {} an {} kann nicht nach {} bewegt werden!",
+            "Figur {} auf {} kann nicht nach {} bewegt werden!",
             get_str(figure).on_white(),
             input.0,
             input.1
@@ -247,7 +247,7 @@ fn handle_move_request(
     }
 
     println!(
-        "Bewege {} an {} nach {}",
+        "Bewege {} von {} nach {}",
         get_str(figure).on_white(),
         input.0,
         input.1
