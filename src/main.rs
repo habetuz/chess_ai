@@ -77,7 +77,7 @@ fn main() {
                 println!("AI> Increasing search depth to {}!", search_depth);
                 fast_calc_counter = 0;
             }
-        } else if time > 120000 {
+        } else if time > 60000 {
             fast_calc_counter = 0;
             if search_depth > 3 {
                 search_depth -= 1;

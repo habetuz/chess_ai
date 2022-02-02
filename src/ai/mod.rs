@@ -38,6 +38,7 @@ pub fn turn(
     } {
         if figure.0 == 255 {
             progress += 1;
+            print_progress(progress, white);
             continue;
         }
 
