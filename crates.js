@@ -1,1 +1,0 @@
-window.ALL_CRATES = ["atty","chess_ai","colored","lazy_static","winapi"];

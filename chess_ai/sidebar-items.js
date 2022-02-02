@@ -1,1 +1,0 @@
-initSidebarItems({"fn":[["main","Main function. Wird beim Programmstart aufgerufen."]],"mod":[["ai",""],["engine",""],["io",""]]});

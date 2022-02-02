@@ -1,1 +1,0 @@
-initSidebarItems({"fn":[["evaluate_board",""],["min_max",""],["print_progress",""],["turn",""]],"mod":[["evaluation",""]]});
