@@ -100,8 +100,8 @@ fn parse_fen(fen: &str) -> (Board, Positions, Positions) {
     let mut fen = fen.chars();
 
     let mut board: Board = [0; 66];
-    let mut black_figures: Positions = [(0,255,255); 16];
-    let mut white_figures: Positions = [(0,255,255); 16];
+    let mut black_figures: Positions = [(255,255,255); 16];
+    let mut white_figures: Positions = [(255,255,255); 16];
 
     let mut board_index = 56;
     let mut x = 1;
@@ -124,6 +124,7 @@ fn parse_fen(fen: &str) -> (Board, Positions, Positions) {
                 'Q' => board[64] += 1,
                 'k' => board[65] += 2,
                 'q' => board[65] += 1,
+                '-' => break,
                 _ => panic!()
             }
             continue;
@@ -145,7 +146,7 @@ fn parse_fen(fen: &str) -> (Board, Positions, Positions) {
             Some(figure) => {
                 board[board_index] = figure as u8;
                 if figure < 10 {
-                    if white_figures[figure-1].0 == 0 {
+                    if white_figures[figure-1].0 == 255 {
                         white_figures[figure-1].0 = figure as u8;
                         white_figures[figure-1].1 = x;
                         white_figures[figure-1].2 = y;
@@ -155,7 +156,7 @@ fn parse_fen(fen: &str) -> (Board, Positions, Positions) {
                         white_figures[figure].2 = y;
                     } else {
                         for i in 8..16 {
-                            if white_figures[i].0 == 0 {
+                            if white_figures[i].0 == 255 {
                                 white_figures[i].0 = figure as u8;
                                 white_figures[i].1 = x;
                                 white_figures[i].2 = y;
@@ -165,17 +166,17 @@ fn parse_fen(fen: &str) -> (Board, Positions, Positions) {
                     }
                 } else  {
                     let figure = figure - 10;
-                    if black_figures[figure-1].0 == 0 {
+                    if black_figures[figure-1].0 == 255 {
                         black_figures[figure-1].0 = figure as u8 + 10;
                         black_figures[figure-1].1 = x;
                         black_figures[figure-1].2 = y;
-                    } else if black_figures[figure].0 == 0 && figure != 12 {
+                    } else if black_figures[figure].0 == 255 && figure != 2 {
                         black_figures[figure].0 = figure as u8 + 10;
                         black_figures[figure].1 = x;
                         black_figures[figure].2 = y;
                     } else {
                         for i in 8..16 {
-                            if black_figures[i].0 == 0 {
+                            if black_figures[i].0 == 255 {
                                 black_figures[i].0 = figure as u8 + 10;
                                 black_figures[i].1 = x;
                                 black_figures[i].2 = y;

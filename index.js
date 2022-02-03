@@ -45,6 +45,8 @@ function onDrop(source, target) {
     // illegal move
     if (move === null) return 'snapback'
 
+    console.log(game.fen())
+
     var fen = chessAi.turn(game.fen())
     game = new Chess(fen);
     board.position(fen);
