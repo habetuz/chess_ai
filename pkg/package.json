@@ -1,0 +1,12 @@
+{
+  "name": "chess_ai",
+  "version": "0.1.0",
+  "files": [
+    "chess_ai_bg.wasm",
+    "chess_ai.js",
+    "chess_ai.d.ts"
+  ],
+  "module": "chess_ai.js",
+  "types": "chess_ai.d.ts",
+  "sideEffects": false
+}

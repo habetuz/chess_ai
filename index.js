@@ -1,5 +1,5 @@
-import init from "./pkg/chess_ai.js";
-import { turn } from "./pkg/chess_ai.js"
+import init from "./pkg/chess_ai.js"
+import * as chessAi from "./pkg/chess_ai.js"
 
 var board = null
 var game = new Chess()
@@ -44,6 +44,11 @@ function onDrop(source, target) {
 
     // illegal move
     if (move === null) return 'snapback'
+
+    var fen = chessAi.turn(game.fen())
+    game = new Chess(fen);
+    board.position(fen);
+
 }
 
 function onMouseoverSquare(square, piece) {
@@ -89,8 +94,6 @@ var config = {
 }
 board = Chessboard('board', config)
 
-console.log(game.fen())
-
 init().then(() => {
-    turn(game.fen())
+    chessAi.start()
 })
