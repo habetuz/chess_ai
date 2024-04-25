@@ -1,5 +1,4 @@
 // Values from the PeSTO evaluation function: https://www.chessprogramming.org/PeSTO%27s_Evaluation_Function
-
 const VALUE_MG_PAWN: i32 = 82;
 const VALUE_MG_KNIGHT: i32 = 337;
 const VALUE_MG_BISHOP: i32 = 365;

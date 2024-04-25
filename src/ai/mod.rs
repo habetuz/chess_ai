@@ -319,10 +319,10 @@ pub fn evaluate_board(black_figures: engine::Positions, white_figures: engine::P
         if black.0 != 255 {
             mg_score -= evaluation::MG_VALUES[(black.0 - 10) as usize]
                 + evaluation::MG_TABLES[(black.0 - 10) as usize]
-                    [((8 * (7 - (black.2 - 1)) + (black.1 - 1)) as usize)];
+                    [(8 * (7 - (black.2 - 1)) + (black.1 - 1)) as usize];
             eg_score -= evaluation::EG_VALUES[(black.0 - 10) as usize]
                 + evaluation::EG_TABLES[(black.0 - 10) as usize]
-                    [((8 * (7 - (black.2 - 1)) + (black.1 - 1)) as usize)];
+                    [(8 * (7 - (black.2 - 1)) + (black.1 - 1)) as usize];
 
             game_phase += evaluation::GAME_PHASE_INC[(black.0 - 10) as usize]
         }

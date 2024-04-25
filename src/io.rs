@@ -241,7 +241,7 @@ fn handle_move_request(
     {
         return Err(format!(
             "Figur {} auf {} kann nicht nach {} bewegt werden!",
-            get_str(figure).on_white(),
+            get_str(figure).on_bright_white(),
             input.0,
             input.1
         ));
@@ -249,7 +249,7 @@ fn handle_move_request(
 
     println!(
         "Bewege {} von {} nach {}",
-        get_str(figure).on_white(),
+        get_str(figure).on_bright_white(),
         input.0,
         input.1
     );
@@ -315,27 +315,27 @@ pub fn print_board(board: engine::Board) {
             println!(
                 "{0} ║{1}{2}{3}{4}{5}{6}{7}{8}║ {0}",
                 y,
-                get_str(engine::get_figure(board, 1, y)).on_white(),
-                get_str(engine::get_figure(board, 2, y)).on_bright_black(),
-                get_str(engine::get_figure(board, 3, y)).on_white(),
-                get_str(engine::get_figure(board, 4, y)).on_bright_black(),
-                get_str(engine::get_figure(board, 5, y)).on_white(),
-                get_str(engine::get_figure(board, 6, y)).on_bright_black(),
-                get_str(engine::get_figure(board, 7, y)).on_white(),
-                get_str(engine::get_figure(board, 8, y)).on_bright_black(),
+                get_str(engine::get_figure(board, 1, y)).on_bright_white(),
+                get_str(engine::get_figure(board, 2, y)).on_bright_cyan(),
+                get_str(engine::get_figure(board, 3, y)).on_bright_white(),
+                get_str(engine::get_figure(board, 4, y)).on_bright_cyan(),
+                get_str(engine::get_figure(board, 5, y)).on_bright_white(),
+                get_str(engine::get_figure(board, 6, y)).on_bright_cyan(),
+                get_str(engine::get_figure(board, 7, y)).on_bright_white(),
+                get_str(engine::get_figure(board, 8, y)).on_bright_cyan(),
             );
         } else {
             println!(
                 "{0} ║{1}{2}{3}{4}{5}{6}{7}{8}║ {0}",
                 y,
-                get_str(engine::get_figure(board, 1, y)).on_bright_black(),
-                get_str(engine::get_figure(board, 2, y)).on_white(),
-                get_str(engine::get_figure(board, 3, y)).on_bright_black(),
-                get_str(engine::get_figure(board, 4, y)).on_white(),
-                get_str(engine::get_figure(board, 5, y)).on_bright_black(),
-                get_str(engine::get_figure(board, 6, y)).on_white(),
-                get_str(engine::get_figure(board, 7, y)).on_bright_black(),
-                get_str(engine::get_figure(board, 8, y)).on_white(),
+                get_str(engine::get_figure(board, 1, y)).on_bright_cyan(),
+                get_str(engine::get_figure(board, 2, y)).on_bright_white(),
+                get_str(engine::get_figure(board, 3, y)).on_bright_cyan(),
+                get_str(engine::get_figure(board, 4, y)).on_bright_white(),
+                get_str(engine::get_figure(board, 5, y)).on_bright_cyan(),
+                get_str(engine::get_figure(board, 6, y)).on_bright_white(),
+                get_str(engine::get_figure(board, 7, y)).on_bright_cyan(),
+                get_str(engine::get_figure(board, 8, y)).on_bright_white(),
             );
         }
     }
@@ -374,7 +374,7 @@ pub fn print_board_with_movements(
                     } else if is_in_movement_set(movements, x, y) {
                         get_str(engine::get_figure(board, x, y)).on_yellow()
                     } else {
-                        get_str(engine::get_figure(board, x, y)).on_white()
+                        get_str(engine::get_figure(board, x, y)).on_bright_white()
                     }
                 },
                 {
@@ -384,7 +384,7 @@ pub fn print_board_with_movements(
                     } else if is_in_movement_set(movements, x, y) {
                         get_str(engine::get_figure(board, x, y)).on_yellow()
                     } else {
-                        get_str(engine::get_figure(board, x, y)).on_bright_black()
+                        get_str(engine::get_figure(board, x, y)).on_bright_cyan()
                     }
                 },
                 {
@@ -394,7 +394,7 @@ pub fn print_board_with_movements(
                     } else if is_in_movement_set(movements, x, y) {
                         get_str(engine::get_figure(board, x, y)).on_yellow()
                     } else {
-                        get_str(engine::get_figure(board, x, y)).on_white()
+                        get_str(engine::get_figure(board, x, y)).on_bright_white()
                     }
                 },
                 {
@@ -404,7 +404,7 @@ pub fn print_board_with_movements(
                     } else if is_in_movement_set(movements, x, y) {
                         get_str(engine::get_figure(board, x, y)).on_yellow()
                     } else {
-                        get_str(engine::get_figure(board, x, y)).on_bright_black()
+                        get_str(engine::get_figure(board, x, y)).on_bright_cyan()
                     }
                 },
                 {
@@ -414,7 +414,7 @@ pub fn print_board_with_movements(
                     } else if is_in_movement_set(movements, x, y) {
                         get_str(engine::get_figure(board, x, y)).on_yellow()
                     } else {
-                        get_str(engine::get_figure(board, x, y)).on_white()
+                        get_str(engine::get_figure(board, x, y)).on_bright_white()
                     }
                 },
                 {
@@ -424,7 +424,7 @@ pub fn print_board_with_movements(
                     } else if is_in_movement_set(movements, x, y) {
                         get_str(engine::get_figure(board, x, y)).on_yellow()
                     } else {
-                        get_str(engine::get_figure(board, x, y)).on_bright_black()
+                        get_str(engine::get_figure(board, x, y)).on_bright_cyan()
                     }
                 },
                 {
@@ -434,7 +434,7 @@ pub fn print_board_with_movements(
                     } else if is_in_movement_set(movements, x, y) {
                         get_str(engine::get_figure(board, x, y)).on_yellow()
                     } else {
-                        get_str(engine::get_figure(board, x, y)).on_white()
+                        get_str(engine::get_figure(board, x, y)).on_bright_white()
                     }
                 },
                 {
@@ -444,7 +444,7 @@ pub fn print_board_with_movements(
                     } else if is_in_movement_set(movements, x, y) {
                         get_str(engine::get_figure(board, x, y)).on_yellow()
                     } else {
-                        get_str(engine::get_figure(board, x, y)).on_bright_black()
+                        get_str(engine::get_figure(board, x, y)).on_bright_cyan()
                     }
                 },
             );
@@ -459,7 +459,7 @@ pub fn print_board_with_movements(
                     } else if is_in_movement_set(movements, x, y) {
                         get_str(engine::get_figure(board, x, y)).on_yellow()
                     } else {
-                        get_str(engine::get_figure(board, x, y)).on_bright_black()
+                        get_str(engine::get_figure(board, x, y)).on_bright_cyan()
                     }
                 },
                 {
@@ -469,7 +469,7 @@ pub fn print_board_with_movements(
                     } else if is_in_movement_set(movements, x, y) {
                         get_str(engine::get_figure(board, x, y)).on_yellow()
                     } else {
-                        get_str(engine::get_figure(board, x, y)).on_white()
+                        get_str(engine::get_figure(board, x, y)).on_bright_white()
                     }
                 },
                 {
@@ -479,7 +479,7 @@ pub fn print_board_with_movements(
                     } else if is_in_movement_set(movements, x, y) {
                         get_str(engine::get_figure(board, x, y)).on_yellow()
                     } else {
-                        get_str(engine::get_figure(board, x, y)).on_bright_black()
+                        get_str(engine::get_figure(board, x, y)).on_bright_cyan()
                     }
                 },
                 {
@@ -489,7 +489,7 @@ pub fn print_board_with_movements(
                     } else if is_in_movement_set(movements, x, y) {
                         get_str(engine::get_figure(board, x, y)).on_yellow()
                     } else {
-                        get_str(engine::get_figure(board, x, y)).on_white()
+                        get_str(engine::get_figure(board, x, y)).on_bright_white()
                     }
                 },
                 {
@@ -499,7 +499,7 @@ pub fn print_board_with_movements(
                     } else if is_in_movement_set(movements, x, y) {
                         get_str(engine::get_figure(board, x, y)).on_yellow()
                     } else {
-                        get_str(engine::get_figure(board, x, y)).on_bright_black()
+                        get_str(engine::get_figure(board, x, y)).on_bright_cyan()
                     }
                 },
                 {
@@ -509,7 +509,7 @@ pub fn print_board_with_movements(
                     } else if is_in_movement_set(movements, x, y) {
                         get_str(engine::get_figure(board, x, y)).on_yellow()
                     } else {
-                        get_str(engine::get_figure(board, x, y)).on_white()
+                        get_str(engine::get_figure(board, x, y)).on_bright_white()
                     }
                 },
                 {
@@ -519,7 +519,7 @@ pub fn print_board_with_movements(
                     } else if is_in_movement_set(movements, x, y) {
                         get_str(engine::get_figure(board, x, y)).on_yellow()
                     } else {
-                        get_str(engine::get_figure(board, x, y)).on_bright_black()
+                        get_str(engine::get_figure(board, x, y)).on_bright_cyan()
                     }
                 },
                 {
@@ -529,7 +529,7 @@ pub fn print_board_with_movements(
                     } else if is_in_movement_set(movements, x, y) {
                         get_str(engine::get_figure(board, x, y)).on_yellow()
                     } else {
-                        get_str(engine::get_figure(board, x, y)).on_white()
+                        get_str(engine::get_figure(board, x, y)).on_bright_white()
                     }
                 },
             );
@@ -587,5 +587,5 @@ pub fn get_str(figure: figures::Figure) -> colored::ColoredString {
         _ => ' ',
     };
 
-    format!(" {}", r#char).black().on_white()
+    format!(" {}", r#char).black().on_bright_white()
 }
